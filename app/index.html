@@ -502,7 +502,7 @@ textarea::placeholder { color: var(--text3); }
   <div class="sidebar">
     <div>
       <div class="label">Research Goal</div>
-      <textarea id="goalInput" placeholder="e.g. What are the latest AI agent frameworks in 2025?"></textarea>
+      <textarea id="goalInput" placeholder="e.g. What are the latest AI agent frameworks in 2025?" onkeydown="handleKey(event)"></textarea>
     </div>
     <button class="run-btn" id="runBtn" onclick="startResearch()">Run Research Agent</button>
     <div>
@@ -542,6 +542,13 @@ let currentSessionId = null;
 let pollInterval = null;
 let currentReport = '';
 let sessions = [];
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    startResearch();
+  }
+}
 
 function toggleTheme() {
   const body = document.body;
