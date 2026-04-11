@@ -1,11 +1,12 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 import uuid
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.background import BackgroundTasks
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -24,10 +25,10 @@ def run_agent(session_id: str, goal: str):
         sessions[session_id]["status"] = "running"
         sessions[session_id]["steps"] = []
 
-        def step_callback(step: str):
-            sessions[session_id]["steps"].append(step)
+        agent = build_graph(
+            step_callback=lambda step: sessions[session_id]["steps"].append(step)
+        )
 
-        agent = build_graph()
         result = agent.invoke({
             "goal": goal,
             "queries": [],
@@ -35,12 +36,10 @@ def run_agent(session_id: str, goal: str):
             "report": "",
             "steps": [],
             "reflection": "",
-            "iteration": 0,
-            "callback": step_callback
+            "iteration": 0
         })
 
         sessions[session_id]["status"] = "complete"
-        sessions[session_id]["steps"] = result["steps"]
         sessions[session_id]["report"] = result["report"]
 
     except Exception as e:

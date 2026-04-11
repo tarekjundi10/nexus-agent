@@ -1,20 +1,23 @@
 import os
 import json
-from typing import TypedDict, Callable, Any
 from dotenv import load_dotenv
+load_dotenv()
+
+from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
 from agent.tools import web_search, synthesize_findings
 from agent.prompts import SYSTEM_PROMPT, PLAN_PROMPT, REFLECT_PROMPT
 
-load_dotenv()
-
+api_key = os.getenv("OPENAI_API_KEY")
 llm = ChatOpenAI(
     model="gpt-4o",
     temperature=0,
-    openai_api_key=os.getenv("OPENAI_API_KEY")
+    openai_api_key=api_key
 )
+
+_step_callback = None
 
 
 class AgentState(TypedDict):
@@ -25,13 +28,12 @@ class AgentState(TypedDict):
     steps: list
     reflection: str
     iteration: int
-    callback: Any
 
 
 def add_step(state: AgentState, step: str):
     state["steps"].append(step)
-    if state.get("callback"):
-        state["callback"](step)
+    if _step_callback:
+        _step_callback(step)
 
 
 def plan_node(state: AgentState) -> AgentState:
@@ -51,13 +53,11 @@ def plan_node(state: AgentState) -> AgentState:
 
 
 def search_node(state: AgentState) -> AgentState:
-    all_findings = []
     for query in state["queries"]:
         add_step(state, f"Searching: {query}")
         results = web_search(query, max_results=3)
-        all_findings.extend(results)
-    state["findings"] = all_findings
-    add_step(state, f"Retrieved {len(all_findings)} sources.")
+        state["findings"].extend(results)
+    add_step(state, f"Retrieved {len(state['findings'])} sources.")
     return state
 
 
@@ -85,7 +85,10 @@ def should_continue(state: AgentState) -> str:
     return "search"
 
 
-def build_graph():
+def build_graph(step_callback=None):
+    global _step_callback
+    _step_callback = step_callback
+
     graph = StateGraph(AgentState)
     graph.add_node("plan", plan_node)
     graph.add_node("search", search_node)

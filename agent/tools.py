@@ -1,16 +1,16 @@
 import os
 from dotenv import load_dotenv
+load_dotenv()
+
 from tavily import TavilyClient
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 import requests
 from bs4 import BeautifulSoup
 
-load_dotenv()
-
+api_key = os.getenv("OPENAI_API_KEY")
 tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
-llm = ChatOpenAI(model="gpt-4o", temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"))
-
+llm = ChatOpenAI(model="gpt-4o", temperature=0, openai_api_key=api_key)
 
 def web_search(query: str, max_results: int = 5) -> list[dict]:
     """Search the web using Tavily and return top results."""
