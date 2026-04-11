@@ -3,63 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus Agent</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Nexus — Research Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0f;
-  --bg2: #111118;
-  --bg3: #16161f;
+  --bg: #181818;
+  --bg2: #141414;
+  --sidebar-bg: #111111;
   --border: rgba(255,255,255,0.07);
-  --text: #e8e8f0;
-  --text2: rgba(255,255,255,0.5);
-  --text3: rgba(255,255,255,0.25);
-  --accent: #6366f1;
-  --accent-bg: rgba(99,102,241,0.12);
-  --accent-border: rgba(99,102,241,0.25);
-  --success: #22c55e;
-  --success-bg: rgba(34,197,94,0.12);
-  --card-bg: rgba(255,255,255,0.03);
-  --card-hover: rgba(255,255,255,0.06);
-  --input-bg: rgba(255,255,255,0.04);
-  --step-done-bg: rgba(34,197,94,0.12);
-  --step-done-text: #22c55e;
-  --step-active-bg: rgba(99,102,241,0.12);
-  --step-active-text: #6366f1;
-  --btn-bg: rgba(255,255,255,0.05);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e6e0;
+  --text2: rgba(232,230,224,0.55);
+  --text3: rgba(232,230,224,0.25);
+  --green: #39ff85;
+  --green-dim: rgba(57,255,133,0.15);
+  --green-border: rgba(57,255,133,0.25);
+  --btn-bg: transparent;
   --btn-border: rgba(255,255,255,0.1);
-  --btn-text: rgba(255,255,255,0.55);
+  --btn-text: rgba(232,230,224,0.4);
+  --input-border: rgba(255,255,255,0.1);
+  --history-hover: rgba(255,255,255,0.04);
 }
 
 body.light {
-  --bg: #f4f4f8;
-  --bg2: #ebebf0;
-  --bg3: #e2e2ea;
-  --border: rgba(0,0,0,0.09);
-  --text: #111118;
-  --text2: rgba(0,0,0,0.5);
-  --text3: rgba(0,0,0,0.28);
-  --accent: #4f52d6;
-  --accent-bg: rgba(79,82,214,0.1);
-  --accent-border: rgba(79,82,214,0.22);
-  --success: #16a34a;
-  --success-bg: rgba(22,163,74,0.1);
-  --card-bg: rgba(0,0,0,0.03);
-  --card-hover: rgba(0,0,0,0.06);
-  --input-bg: rgba(0,0,0,0.04);
-  --step-done-bg: rgba(22,163,74,0.1);
-  --step-done-text: #16a34a;
-  --step-active-bg: rgba(79,82,214,0.1);
-  --step-active-text: #4f52d6;
-  --btn-bg: rgba(0,0,0,0.04);
-  --btn-border: rgba(0,0,0,0.1);
-  --btn-text: rgba(0,0,0,0.5);
+  --bg: #f5f3ee;
+  --bg2: #eeece7;
+  --sidebar-bg: #ece9e3;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1a18;
+  --text2: rgba(26,26,24,0.55);
+  --text3: rgba(26,26,24,0.28);
+  --green: #1a8c4e;
+  --green-dim: rgba(26,140,78,0.1);
+  --green-border: rgba(26,140,78,0.25);
+  --btn-bg: transparent;
+  --btn-border: rgba(0,0,0,0.12);
+  --btn-text: rgba(26,26,24,0.4);
+  --input-border: rgba(0,0,0,0.12);
+  --history-hover: rgba(0,0,0,0.04);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
   height: 100vh;
@@ -67,7 +55,6 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
@@ -75,175 +62,167 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 28px;
+  padding: 18px 32px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-  background: var(--bg);
+  background: var(--bg2);
 }
 
 .logo {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 14px;
 }
 
-.logo-icon {
-  width: 30px;
-  height: 30px;
-  background: var(--accent);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
+.logo-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
   font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.logo-text {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
   color: var(--text);
+  letter-spacing: -0.3px;
 }
 
-.logo-badge {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
-  background: var(--accent-bg);
+.logo-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  border: 1px solid var(--green-border);
   padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--accent-border);
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 20px;
+}
+
+.live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--green);
+  letter-spacing: 0.5px;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: blink 1.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
 }
 
 .theme-btn {
-  padding: 5px 12px;
-  background: var(--btn-bg);
-  border: 1px solid var(--btn-border);
-  border-radius: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
   color: var(--btn-text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  border: 1px solid var(--btn-border);
+  padding: 5px 12px;
   cursor: pointer;
-  letter-spacing: 0.8px;
+  background: var(--btn-bg);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   transition: all 0.15s;
 }
 
 .theme-btn:hover {
-  background: var(--card-hover);
   color: var(--text);
-}
-
-.status-label {
-  font-size: 12px;
-  color: var(--success);
-  font-family: 'JetBrains Mono', monospace;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.dot {
-  width: 7px;
-  height: 7px;
-  background: var(--success);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  border-color: var(--border2);
 }
 
 .main {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 320px 1fr;
   flex: 1;
   overflow: hidden;
 }
 
 .sidebar {
+  background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
-  padding: 22px 18px;
+  padding: 28px 22px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
   overflow-y: auto;
-  background: var(--bg);
 }
 
-.label {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
+.field-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
   color: var(--text3);
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 textarea {
   width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--input-border);
+  padding: 8px 0 12px;
   color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
   resize: none;
   height: 110px;
   outline: none;
+  line-height: 1.7;
   transition: border-color 0.2s;
-  line-height: 1.6;
 }
 
-textarea:focus { border-color: var(--accent-border); }
-textarea::placeholder { color: var(--text3); }
+textarea:focus { border-color: var(--green-border); }
+textarea::placeholder { color: var(--text3); font-style: italic; }
 
 .run-btn {
   width: 100%;
-  padding: 13px;
-  background: var(--accent);
+  padding: 14px;
+  background: var(--green);
   border: none;
-  border-radius: 10px;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
+  color: #111;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
   transition: all 0.15s;
-  letter-spacing: 0.3px;
 }
 
-.run-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-.run-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.run-btn:hover { opacity: 0.88; }
+.run-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.sidebar-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
 
 .history-item {
-  padding: 10px 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: all 0.15s;
-  margin-bottom: 6px;
 }
 
-.history-item:hover {
-  background: var(--card-hover);
-}
+.history-item:last-child { border-bottom: none; }
+.history-item:hover { padding-left: 4px; }
 
 .history-goal {
-  font-size: 12px;
-  color: var(--text);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text2);
   margin-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
@@ -251,20 +230,20 @@ textarea::placeholder { color: var(--text3); }
 }
 
 .history-meta {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
   color: var(--text3);
+  letter-spacing: 0.5px;
 }
 
 .content {
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: 220px 1fr;
   overflow: hidden;
-  background: var(--bg);
 }
 
 .panel {
-  padding: 22px 26px;
+  padding: 24px 36px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -273,6 +252,7 @@ textarea::placeholder { color: var(--text3); }
 
 .panel:first-child {
   border-bottom: 1px solid var(--border);
+  background: var(--bg2);
 }
 
 .panel-header {
@@ -284,56 +264,43 @@ textarea::placeholder { color: var(--text3); }
 }
 
 .panel-status {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
-  letter-spacing: 1px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
+
+.steps-wrap { flex: 1; }
 
 .step {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 8px;
-  animation: fadeUp 0.25s ease;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 10px;
+  animation: stepIn 0.25s ease;
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes stepIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-.step-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  font-weight: 600;
+.step-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  min-width: 26px;
   flex-shrink: 0;
-  margin-top: 2px;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0;
 }
 
-.step-icon.done {
-  background: var(--step-done-bg);
-  color: var(--step-done-text);
-}
-
-.step-icon.active {
-  background: var(--step-active-bg);
-  color: var(--step-active-text);
-}
+.step-num.active { color: var(--green); }
 
 .step-text {
+  font-family: 'IBM Plex Mono', monospace;
   font-size: 13px;
   color: var(--text2);
-  font-family: 'JetBrains Mono', monospace;
-  line-height: 1.6;
-  padding-top: 2px;
+  line-height: 1.65;
 }
 
 .step-text.active { color: var(--text); }
@@ -343,141 +310,153 @@ textarea::placeholder { color: var(--text3); }
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
   color: var(--text3);
-  font-size: 12px;
-  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  font-style: italic;
 }
 
 .report-wrap { flex: 1; }
 
+.report-dateline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
 .report-title {
-  font-size: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 4px;
-  letter-spacing: -0.4px;
-  line-height: 1.3;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  margin-bottom: 18px;
+}
+
+.report-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.report-meta-item {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.5px;
 }
 
 .report-h2 {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin: 18px 0 8px;
-  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px;
+  margin: 24px 0 10px;
 }
 
 .report-h3 {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--text);
-  margin: 12px 0 6px;
+  margin: 16px 0 6px;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .report-p {
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 300;
   color: var(--text2);
-  line-height: 1.85;
-  margin-bottom: 6px;
+  line-height: 1.9;
+  margin-bottom: 8px;
 }
 
 .report-li {
-  font-size: 14px;
-  color: var(--text2);
-  line-height: 1.8;
-  padding-left: 14px;
-  position: relative;
-  margin-bottom: 4px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
-.report-li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 10px;
-  width: 4px;
-  height: 4px;
-  background: var(--accent);
-  border-radius: 50%;
+.report-li-dash {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--green);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.report-li-text {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.85;
 }
 
 .report-hr {
   border: none;
   border-top: 1px solid var(--border);
-  margin: 14px 0;
+  margin: 16px 0;
 }
 
-.dl-btn {
-  padding: 6px 13px;
+.action-btn {
+  padding: 7px 16px;
   background: var(--btn-bg);
   border: 1px solid var(--btn-border);
-  border-radius: 7px;
   color: var(--btn-text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
   cursor: pointer;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   transition: all 0.15s;
-  letter-spacing: 0.5px;
 }
 
-.dl-btn:hover {
-  background: var(--card-hover);
-  color: var(--text);
-}
-.fs-btn {
-  padding: 6px 13px;
-  background: var(--btn-bg);
-  border: 1px solid var(--btn-border);
-  border-radius: 7px;
-  color: var(--btn-text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  cursor: pointer;
-  transition: all 0.15s;
-  letter-spacing: 0.5px;
+.action-btn:hover {
+  color: var(--green);
+  border-color: var(--green-border);
 }
 
-.fs-btn:hover {
-  background: var(--card-hover);
-  color: var(--text);
+.error-msg {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #ff6b6b;
+  background: rgba(255,107,107,0.07);
+  border: 1px solid rgba(255,107,107,0.2);
+  padding: 12px 14px;
+  margin-top: 10px;
+  line-height: 1.6;
 }
 
 .fullscreen-overlay {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   z-index: 9999;
   background: var(--bg);
-  padding: 32px 48px;
+  padding: 40px 120px;
   overflow-y: auto;
   flex-direction: column;
 }
 
-.fullscreen-overlay.active {
-  display: flex;
-}
+.fullscreen-overlay.active { display: flex; }
 
 .fullscreen-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-}
-.error-msg {
-  font-size: 12px;
-  font-family: 'JetBrains Mono', monospace;
-  color: #f87171;
-  background: rgba(248,113,113,0.08);
-  border: 1px solid rgba(248,113,113,0.2);
-  border-radius: 8px;
-  padding: 12px;
-  margin-top: 10px;
 }
 </style>
 </head>
@@ -485,15 +464,14 @@ textarea::placeholder { color: var(--text3); }
 
 <div class="topbar">
   <div class="logo">
-    <div class="logo-icon">N</div>
-    <span class="logo-text">Nexus</span>
-    <span class="logo-badge">AGENT v1.0</span>
+    <span class="logo-name">Nexus</span>
+    <span class="logo-tag">Research Agent</span>
   </div>
   <div class="topbar-right">
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">LIGHT</button>
-    <div class="status-label">
-      <div class="dot"></div>
-      GPT-4o &middot; Tavily Search
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Light</button>
+    <div class="live">
+      <div class="live-dot"></div>
+      GPT-4o &middot; Tavily
     </div>
   </div>
 </div>
@@ -501,34 +479,35 @@ textarea::placeholder { color: var(--text3); }
 <div class="main">
   <div class="sidebar">
     <div>
-      <div class="label">Research Goal</div>
-      <textarea id="goalInput" placeholder="e.g. What are the latest AI agent frameworks in 2025?" onkeydown="handleKey(event)"></textarea>
+      <div class="field-label">Research goal</div>
+      <textarea id="goalInput" placeholder="What do you want to research?" onkeydown="handleKey(event)"></textarea>
     </div>
-    <button class="run-btn" id="runBtn" onclick="startResearch()">Run Research Agent</button>
+    <button class="run-btn" id="runBtn" onclick="startResearch()">Run Agent</button>
+    <div class="sidebar-divider"></div>
     <div>
-      <div class="label">Recent Sessions</div>
+      <div class="field-label">Previous sessions</div>
       <div id="historyList"></div>
     </div>
   </div>
 
   <div class="content">
     <div class="panel">
-      <div class="panel-header" id="reportPanel">
-        <div class="label" style="margin-bottom:0">Agent Thinking</div>
+      <div class="panel-header">
+        <div class="field-label" style="margin-bottom:0">Agent thinking</div>
         <div class="panel-status" id="agentStatus"></div>
       </div>
-      <div id="stepsContainer">
-        <div class="empty-state" id="emptyThinking">waiting for research goal</div>
+      <div class="steps-wrap" id="stepsContainer">
+        <div class="empty-state">waiting for a research goal</div>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header">
-        <div class="label" style="margin-bottom:0">Research Report</div>
-        <div style="display:flex;gap:8px;align-items:center">
-  <button class="fs-btn" id="fsBtn" onclick="toggleFullscreen()">FULLSCREEN</button>
-  <button class="dl-btn" id="dlBtn" onclick="downloadReport()" style="display:none">Download .md</button>
-</div>
+        <div class="field-label" style="margin-bottom:0">Research report</div>
+        <div style="display:flex;gap:8px">
+          <button class="action-btn" onclick="toggleFullscreen()">Fullscreen</button>
+          <button class="action-btn" id="dlBtn" onclick="downloadReport()" style="display:none">Download</button>
+        </div>
       </div>
       <div class="report-wrap" id="reportContent">
         <div class="empty-state">report will appear here</div>
@@ -537,11 +516,26 @@ textarea::placeholder { color: var(--text3); }
   </div>
 </div>
 
+<div class="fullscreen-overlay" id="fsOverlay">
+  <div class="fullscreen-header">
+    <div class="logo">
+      <span class="logo-name">Nexus</span>
+      <span class="logo-tag">Research Report</span>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="action-btn" onclick="downloadReport()">Download</button>
+      <button class="action-btn" onclick="closeFullscreen()">Exit</button>
+    </div>
+  </div>
+  <div id="fsReportContent" style="flex:1"></div>
+</div>
+
 <script>
 let currentSessionId = null;
 let pollInterval = null;
 let currentReport = '';
 let sessions = [];
+let stepCount = 0;
 
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
@@ -555,10 +549,10 @@ function toggleTheme() {
   const btn = document.getElementById('themeBtn');
   if (body.classList.contains('light')) {
     body.classList.remove('light');
-    btn.textContent = 'LIGHT';
+    btn.textContent = 'Light';
   } else {
     body.classList.add('light');
-    btn.textContent = 'DARK';
+    btn.textContent = 'Dark';
   }
 }
 
@@ -570,11 +564,11 @@ async function startResearch() {
   btn.disabled = true;
   btn.textContent = 'Running...';
 
-  document.getElementById('emptyThinking') && (document.getElementById('emptyThinking').style.display = 'none');
+  stepCount = 0;
   document.getElementById('stepsContainer').innerHTML = '';
-  document.getElementById('reportContent').innerHTML = '<div class="empty-state">generating report...</div>';
+  document.getElementById('reportContent').innerHTML = '<div class="empty-state">synthesizing report...</div>';
   document.getElementById('dlBtn').style.display = 'none';
-  document.getElementById('agentStatus').textContent = 'RUNNING';
+  document.getElementById('agentStatus').textContent = 'Running';
   currentReport = '';
 
   const res = await fetch('/research', {
@@ -596,26 +590,26 @@ async function poll() {
   if (!currentSessionId) return;
   const res = await fetch('/status/' + currentSessionId);
   const data = await res.json();
-
   renderSteps(data.steps, data.status);
 
   if (data.status === 'complete') {
     clearInterval(pollInterval);
-    document.getElementById('agentStatus').textContent = 'COMPLETE';
+    document.getElementById('agentStatus').textContent = 'Complete';
     fetchReport();
     updateSessionStatus(currentSessionId, 'complete');
     const btn = document.getElementById('runBtn');
     btn.disabled = false;
-    btn.textContent = 'Run Research Agent';
+    btn.textContent = 'Run Agent';
   }
 
   if (data.status === 'error') {
     clearInterval(pollInterval);
-    document.getElementById('agentStatus').textContent = 'ERROR';
-    document.getElementById('stepsContainer').innerHTML += '<div class="error-msg">' + data.error + '</div>';
+    document.getElementById('agentStatus').textContent = 'Error';
+    document.getElementById('stepsContainer').innerHTML +=
+      '<div class="error-msg">' + data.error + '</div>';
     const btn = document.getElementById('runBtn');
     btn.disabled = false;
-    btn.textContent = 'Run Research Agent';
+    btn.textContent = 'Run Agent';
   }
 }
 
@@ -625,13 +619,12 @@ function renderSteps(steps, status) {
   steps.forEach((step, i) => {
     const isLast = i === steps.length - 1;
     const isActive = isLast && status === 'running';
+    const num = String(i + 1).padStart(2, '0');
     const div = document.createElement('div');
     div.className = 'step';
     div.innerHTML =
-      '<div class="step-icon ' + (isActive ? 'active' : 'done') + '">' +
-      (isActive ? '...' : 'ok') +
-      '</div>' +
-      '<div class="step-text ' + (isActive ? 'active' : '') + '">' + step + '</div>';
+      '<span class="step-num ' + (isActive ? 'active' : '') + '">' + num + '</span>' +
+      '<span class="step-text ' + (isActive ? 'active' : '') + '">' + step + '</span>';
     container.appendChild(div);
   });
 }
@@ -640,36 +633,47 @@ async function fetchReport() {
   const res = await fetch('/report/' + currentSessionId);
   const data = await res.json();
   currentReport = data.report;
-  renderReport(data.report);
+  renderReport(data.report, document.getElementById('reportContent'), true);
   document.getElementById('dlBtn').style.display = 'block';
 }
 
-function renderReport(md) {
-  const container = document.getElementById('reportContent');
+function renderReport(md, container, withMeta) {
+  const fmt = (text) => text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/(https?:\/\/[^\s<>"]+)/g,
+      '<a href="$1" target="_blank" style="color:var(--green);text-decoration:none;border-bottom:1px solid var(--green-border);">$1</a>');
+
   let html = '';
   const lines = md.split('\n');
-
-  const fmt = (text) => {
-    text = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/(https?:\/\/[^\s<>"]+)/g,
-        '<a href="$1" target="_blank" style="color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-border);">$1</a>');
-    return text;
-  };
+  let firstH1 = false;
 
   lines.forEach(line => {
     if (line.startsWith('# ')) {
-      html += '<div class="report-title">' + fmt(line.slice(2)) + '</div>';
+      if (!firstH1 && withMeta) {
+        html += '<div class="report-dateline">Research Report &middot; ' +
+          new Date().toLocaleDateString('en-US', {month:'long', year:'numeric'}) + '</div>';
+        html += '<div class="report-title">' + fmt(line.slice(2)) + '</div>';
+        html += '<div class="report-meta">' +
+          '<span class="report-meta-item">GPT-4o synthesis</span>' +
+          '<span class="report-meta-item">&middot;</span>' +
+          '<span class="report-meta-item">Tavily web search</span>' +
+          '</div>';
+        firstH1 = true;
+      } else {
+        html += '<div class="report-title">' + fmt(line.slice(2)) + '</div>';
+      }
     } else if (line.startsWith('## ')) {
       html += '<div class="report-h2">' + fmt(line.slice(3)) + '</div>';
     } else if (line.startsWith('### ')) {
       html += '<div class="report-h3">' + fmt(line.slice(4)) + '</div>';
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
-      html += '<div class="report-li">' + fmt(line.slice(2)) + '</div>';
+      html += '<div class="report-li"><span class="report-li-dash">&mdash;</span>' +
+        '<span class="report-li-text">' + fmt(line.slice(2)) + '</span></div>';
     } else if (/^\d+\.\s/.test(line)) {
-      html += '<div class="report-li">' + fmt(line.replace(/^\d+\.\s/, '')) + '</div>';
-    } else if (line.trim() === '---' || line.trim() === '***') {
+      html += '<div class="report-li"><span class="report-li-dash">&mdash;</span>' +
+        '<span class="report-li-text">' + fmt(line.replace(/^\d+\.\s/, '')) + '</span></div>';
+    } else if (line.trim() === '---') {
       html += '<div class="report-hr"></div>';
     } else if (line.trim()) {
       html += '<div class="report-p">' + fmt(line) + '</div>';
@@ -689,24 +693,10 @@ function downloadReport() {
   URL.revokeObjectURL(url);
 }
 
-function renderHistory() {
-  const list = document.getElementById('historyList');
-  list.innerHTML = '';
-  sessions.slice(0, 5).forEach(s => {
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    div.innerHTML =
-      '<div class="history-goal">' + s.goal + '</div>' +
-      '<div class="history-meta">' + s.status.toUpperCase() + '</div>';
-    list.appendChild(div);
-  });
-}
-
 function toggleFullscreen() {
   const overlay = document.getElementById('fsOverlay');
   const fsContent = document.getElementById('fsReportContent');
-  const mainContent = document.getElementById('reportContent');
-  fsContent.innerHTML = mainContent.innerHTML;
+  renderReport(currentReport, fsContent, true);
   overlay.classList.add('active');
 }
 
@@ -714,24 +704,27 @@ function closeFullscreen() {
   document.getElementById('fsOverlay').classList.remove('active');
 }
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeFullscreen();
 });
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  list.innerHTML = '';
+  sessions.slice(0, 6).forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML =
+      '<div class="history-goal">' + s.goal + '</div>' +
+      '<div class="history-meta">' + s.status + '</div>';
+    list.appendChild(div);
+  });
+}
 
 function updateSessionStatus(id, status) {
   const s = sessions.find(s => s.session_id === id);
   if (s) { s.status = status; renderHistory(); }
 }
 </script>
-<div class="fullscreen-overlay" id="fsOverlay">
-  <div class="fullscreen-header">
-    <div class="label" style="margin-bottom:0">Research Report</div>
-    <div style="display:flex;gap:8px">
-      <button class="dl-btn" onclick="downloadReport()">Download .md</button>
-      <button class="fs-btn" onclick="closeFullscreen()">EXIT FULLSCREEN</button>
-    </div>
-  </div>
-  <div id="fsReportContent" style="flex:1"></div>
-</div>
 </body>
 </html>
