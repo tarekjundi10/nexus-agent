@@ -7,6 +7,10 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from fastapi.background import BackgroundTasks
+from fastapi.responses import StreamingResponse
+from docx import Document
+from docx.shared import Pt, RGBColor
+import io
 
 load_dotenv()
 
@@ -92,7 +96,49 @@ def get_sessions():
         })
     return result
 
+@app.get("/download/{session_id}")
+def download_docx(session_id: str):
+    if session_id not in sessions:
+        return {"error": "Session not found"}
+    
+    s = sessions[session_id]
+    report = s.get("report", "")
+    goal = s.get("goal", "Research Report")
 
+    doc = Document()
+
+    title = doc.add_heading(goal, 0)
+    title.runs[0].font.color.rgb = RGBColor(0x11, 0x11, 0x18)
+
+    for line in report.split('\n'):
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith('# '):
+            doc.add_heading(line[2:], level=1)
+        elif line.startswith('## '):
+            doc.add_heading(line[3:], level=2)
+        elif line.startswith('### '):
+            doc.add_heading(line[4:], level=3)
+        elif line.startswith('- ') or line.startswith('* '):
+            p = doc.add_paragraph(line[2:], style='List Bullet')
+        elif line.startswith('---'):
+            doc.add_paragraph('─' * 50)
+        else:
+            line = line.replace('**', '')
+            doc.add_paragraph(line)
+
+    buffer = io.BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+
+    filename = goal[:40].replace(' ', '_') + '.docx'
+    return StreamingResponse(
+        buffer,
+        media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        headers={'Content-Disposition': f'attachment; filename="{filename}"'}
+    )
+    
 @app.get("/", response_class=HTMLResponse)
 def index():
     with open("app/index_nexus.html", "r") as f:

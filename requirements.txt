@@ -12,3 +12,4 @@ python-dotenv
 pydantic
 reportlab
 beautifulsoup4
+python-docx

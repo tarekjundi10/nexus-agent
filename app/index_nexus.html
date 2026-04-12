@@ -506,7 +506,7 @@ textarea::placeholder { color: var(--text3); font-style: italic; }
         <div class="field-label" style="margin-bottom:0">Research report</div>
         <div style="display:flex;gap:8px">
           <button class="action-btn" onclick="toggleFullscreen()">Fullscreen</button>
-          <button class="action-btn" id="dlBtn" onclick="downloadReport()" style="display:none">Download</button>
+          <button class="action-btn" id="dlBtn" onclick="downloadReport()" style="display:none">Download .docx</button>
         </div>
       </div>
       <div class="report-wrap" id="reportContent">
@@ -523,7 +523,7 @@ textarea::placeholder { color: var(--text3); font-style: italic; }
       <span class="logo-tag">Research Report</span>
     </div>
     <div style="display:flex;gap:10px">
-      <button class="action-btn" onclick="downloadReport()">Download</button>
+      <button class="action-btn" onclick="downloadReport()">Download .docx</button>
       <button class="action-btn" onclick="closeFullscreen()">Exit</button>
     </div>
   </div>
@@ -684,13 +684,8 @@ function renderReport(md, container, withMeta) {
 }
 
 function downloadReport() {
-  const blob = new Blob([currentReport], { type: 'text/markdown' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'nexus_report.md';
-  a.click();
-  URL.revokeObjectURL(url);
+  if (!currentSessionId) return;
+  window.location.href = '/download/' + currentSessionId;
 }
 
 function toggleFullscreen() {
