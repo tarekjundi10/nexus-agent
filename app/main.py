@@ -95,5 +95,5 @@ def get_sessions():
 
 @app.get("/", response_class=HTMLResponse)
 def index():
-    with open("app/index.html", "r") as f:
+    with open("app/index_nexus.html", "r") as f:
         return f.read()
