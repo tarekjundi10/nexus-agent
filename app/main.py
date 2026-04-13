@@ -121,12 +121,19 @@ def download_docx(session_id: str):
         elif line.startswith('### '):
             doc.add_heading(line[4:], level=3)
         elif line.startswith('- ') or line.startswith('* '):
-            p = doc.add_paragraph(line[2:], style='List Bullet')
+            import re
+            text = re.sub(r'\*\*(.*?)\*\*', r'\1', line[2:])
+            text = re.sub(r'\*(.*?)\*', r'\1', text)
+            doc.add_paragraph(text, style='List Bullet')
+        
         elif line.startswith('---'):
             doc.add_paragraph('─' * 50)
         else:
-            line = line.replace('**', '')
-            doc.add_paragraph(line)
+            import re
+            line = re.sub(r'\*\*(.*?)\*\*', r'\1', line)
+            line = re.sub(r'\*(.*?)\*', r'\1', line)
+            if line.strip():
+                doc.add_paragraph(line)
 
     buffer = io.BytesIO()
     doc.save(buffer)
