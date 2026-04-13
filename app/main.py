@@ -11,11 +11,12 @@ from fastapi.responses import StreamingResponse
 from docx import Document
 from docx.shared import Pt, RGBColor
 import io
+from fastapi.staticfiles import StaticFiles
 
 load_dotenv()
 
 app = FastAPI()
-
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 sessions = {}
 
 
