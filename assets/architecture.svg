@@ -57,10 +57,10 @@
 </g>
 
 <path d="M480 336 L400 336 L400 242 L450 242" class="dashed-arr" marker-end="url(#arrow)"/>
-<text class="ts" x="420" y="326" text-anchor="middle">retry if NO</text>
+<text class="ts" x="435" y="326" text-anchor="middle">retry if NO</text>
 
 <path d="M550 362 L550 410 L490 410" class="arr" marker-end="url(#arrow)"/>
-<text class="yes-label" x="558" y="392" text-anchor="start">YES</text>
+<text class="yes-label" x="558" y="410" text-anchor="start">YES</text>
 
 <g>
   <rect x="350" y="388" width="140" height="52" rx="8" class="gray-box"/>
@@ -69,7 +69,7 @@
 </g>
 
 <rect x="130" y="158" width="510" height="230" rx="14" class="dashed-border"/>
-<text class="ts" x="385" y="149" text-anchor="middle">LangGraph state machine</text>
+<text class="ts" x="420" y="149" text-anchor="middle">LangGraph state machine</text>
 
 <g>
   <rect x="240" y="58" width="210" height="52" rx="8" class="gray-box"/>
