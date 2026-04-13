@@ -34,24 +34,9 @@ All steps are visible in real time through the live thinking feed.
 
 ## Architecture
 
-```
-User Goal
-    │
-    ▼
-FastAPI Backend (/research)
-    │
-    ▼
-┌─────────────────────────────────────┐
-│         LangGraph Agent             │
-│                                     │
-│  Plan → Search → Analyze → Reflect  │
-│              ↑__________|           │
-│           (retry if needed)         │
-└─────────────────────────────────────┘
-    │
-    ▼
-Structured Report (browser + .docx)
-```
+![Architecture](assets/architecture.svg)
+
+The agent is built as a LangGraph state machine with four nodes. After drafting a report, the Reflect node checks whether the goal is fully addressed. If not, it loops back to Search for another pass. Maximum two iterations.
 
 ---
 
@@ -80,24 +65,24 @@ Structured Report (browser + .docx)
 
 ## How to Run Locally
 
-```bash
+\`\`\`bash
 git clone https://github.com/tarekjundi10/nexus-agent.git
 cd nexus-agent
 pip install -r requirements.txt
-```
+\`\`\`
 
-Create a `.env` file:
+Create a \`.env\` file:
 
-```
+\`\`\`
 OPENAI_API_KEY=your-openai-key
 TAVILY_API_KEY=your-tavily-key
-```
+\`\`\`
 
 Run:
 
-```bash
+\`\`\`bash
 uvicorn app.main:app --reload
-```
+\`\`\`
 
 Open http://127.0.0.1:8000
 
@@ -107,7 +92,7 @@ Open http://127.0.0.1:8000
 
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | `/research` | Start a research session |
-| GET | `/status/{id}` | Get live agent steps |
-| GET | `/report/{id}` | Get the final report |
-| GET | `/download/{id}` | Download report as .docx |
+| POST | \`/research\` | Start a research session |
+| GET | \`/status/{id}\` | Get live agent steps |
+| GET | \`/report/{id}\` | Get the final report |
+| GET | \`/download/{id}\` | Download report as .docx |
