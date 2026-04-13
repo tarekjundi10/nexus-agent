@@ -1,49 +1,113 @@
 # Nexus Agent
 
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![LangGraph](https://img.shields.io/badge/LangGraph-Agent-teal)
+![GPT-4o](https://img.shields.io/badge/GPT--4o-OpenAI-black)
+![FastAPI](https://img.shields.io/badge/FastAPI-Live-green)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
 Autonomous AI research agent that searches the web, analyzes findings, and delivers structured reports in real time.
 
 **Live Demo:** https://nexus-agent-26y9.onrender.com
 
-## What it does
+---
 
-Give Nexus a research goal and it autonomously plans search queries, searches the web across multiple sources, synthesizes findings, reflects on report quality, and delivers a structured professional report — all visible in real time through a clean UI.
+## Demo
+
+![Nexus Agent Demo](assets/demo.png)
+
+---
+
+## How it works
+
+Give Nexus a research goal and it autonomously:
+
+1. Plans 3–5 targeted search queries from your goal
+2. Searches the web across multiple sources using Tavily
+3. Synthesizes findings into a structured report using GPT-4o
+4. Reflects on report quality and loops back if needed
+5. Delivers the report — readable in browser or downloadable as Word
+
+All steps are visible in real time through the live thinking feed.
+
+---
+
+## Architecture
+
+```
+User Goal
+    │
+    ▼
+FastAPI Backend (/research)
+    │
+    ▼
+┌─────────────────────────────────────┐
+│         LangGraph Agent             │
+│                                     │
+│  Plan → Search → Analyze → Reflect  │
+│              ↑__________|           │
+│           (retry if needed)         │
+└─────────────────────────────────────┘
+    │
+    ▼
+Structured Report (browser + .docx)
+```
+
+---
 
 ## Features
 
 - Live agent thinking feed — watch every step as it happens
-- Structured reports with Executive Summary, Key Findings, Detailed Analysis, Sources
+- Structured reports: Executive Summary, Key Findings, Detailed Analysis, Sources
+- Download report as Word document (.docx)
 - Fullscreen report mode
 - Light and dark mode
-- Download report as Markdown
 - Enter key to submit
+
+---
 
 ## Tech Stack
 
-Python · LangGraph · GPT-4o · Tavily Search · FastAPI · Render
+| Layer | Technology |
+|---|---|
+| Agent | LangGraph + GPT-4o |
+| Web Search | Tavily API |
+| Backend | FastAPI + Python |
+| Frontend | HTML / CSS / JS |
+| Deployment | Render |
+
+---
 
 ## How to Run Locally
 
-    git clone https://github.com/tarekjundi10/nexus-agent.git
-    cd nexus-agent
-    pip install -r requirements.txt
+```bash
+git clone https://github.com/tarekjundi10/nexus-agent.git
+cd nexus-agent
+pip install -r requirements.txt
+```
 
 Create a `.env` file:
 
-    OPENAI_API_KEY=your-openai-key
-    TAVILY_API_KEY=your-tavily-key
+```
+OPENAI_API_KEY=your-openai-key
+TAVILY_API_KEY=your-tavily-key
+```
 
-Then run:
+Run:
 
-    uvicorn app.main:app --reload
+```bash
+uvicorn app.main:app --reload
+```
 
 Open http://127.0.0.1:8000
 
-## Architecture
-
-The agent is built as a LangGraph state machine with four nodes: plan, search, analyze, and reflect. After drafting a report, the agent reflects on whether the goal is fully addressed and loops back to search if needed, up to a maximum of two iterations.
+---
 
 ## API Endpoints
 
-- `POST /research` — start a research session
-- `GET /status/{session_id}` — get live agent steps
-- `GET /report/{session_id}` — get the final report
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/research` | Start a research session |
+| GET | `/status/{id}` | Get live agent steps |
+| GET | `/report/{id}` | Get the final report |
+| GET | `/download/{id}` | Download report as .docx |
