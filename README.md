@@ -1,5 +1,4 @@
 # Nexus Agent
-
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
 ![LangGraph](https://img.shields.io/badge/LangGraph-Agent-teal)
 ![GPT-4o](https://img.shields.io/badge/GPT--4o-OpenAI-black)
@@ -65,24 +64,24 @@ The agent is built as a LangGraph state machine with four nodes. After drafting 
 
 ## How to Run Locally
 
-\`\`\`bash
+```bash
 git clone https://github.com/tarekjundi10/nexus-agent.git
 cd nexus-agent
 pip install -r requirements.txt
-\`\`\`
+```
 
-Create a \`.env\` file:
+Create a `.env` file:
 
-\`\`\`
+```
 OPENAI_API_KEY=your-openai-key
 TAVILY_API_KEY=your-tavily-key
-\`\`\`
+```
 
 Run:
 
-\`\`\`bash
+```bash
 uvicorn app.main:app --reload
-\`\`\`
+```
 
 Open http://127.0.0.1:8000
 
@@ -92,7 +91,7 @@ Open http://127.0.0.1:8000
 
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | \`/research\` | Start a research session |
-| GET | \`/status/{id}\` | Get live agent steps |
-| GET | \`/report/{id}\` | Get the final report |
-| GET | \`/download/{id}\` | Download report as .docx |
+| POST | `/research` | Start a research session |
+| GET | `/status/{id}` | Get live agent steps |
+| GET | `/report/{id}` | Get the final report |
+| GET | `/download/{id}` | Download report as .docx |
